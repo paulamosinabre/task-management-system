@@ -7,7 +7,7 @@ public class Main {
 
     static Scanner scan = new Scanner(System.in);
     static ArrayList<Registration> users = new ArrayList<>();
-    static String username, userTask, priority, date, subject, type;
+    static String username, userTask, status, priority, date, subject, type;
     static Registration register;
 
     public static void start() {
@@ -112,16 +112,29 @@ public class Main {
                     System.out.print("Enter your task: ");
                     userTask = scan.nextLine();
 
+                    System.out.print("Enter your status (Not started, In progress, Done): ");
+                    status = scan.nextLine();
+
+                    if (!(status.equalsIgnoreCase("Not Started") || status.equalsIgnoreCase("In progress") || status.equalsIgnoreCase("Done"))) {
+                        System.out.println("Please choose among the choices!");
+                        break;
+                    } 
+
+                    System.out.print("Set priority (Low, Medium, High): ");
+                    priority = scan.nextLine();
+
+                    if (!(priority.equalsIgnoreCase("Low") || priority.equalsIgnoreCase("Medium") || priority.equalsIgnoreCase("High"))) {
+                        System.out.println("Please choose among the choices!");
+                        break;
+                    }
+
                     System.out.print("Set type (Ex: Health, Household, Errand, Habits, etc..): ");
                     type = scan.nextLine();
-
-                    System.out.print("Set priority (Ex: Low, Medium, High): ");
-                    priority = scan.nextLine();
 
                     System.out.print("Set date (dd-mm-yyyy): ");
                     date = scan.nextLine();
 
-                    Task personalTask = new PersonalTask(userTask, "Personal", priority, date, type);
+                    Task personalTask = new PersonalTask(userTask, "Personal", status, priority, date, type);
                     manager.add(personalTask);
                     break;
 
@@ -130,16 +143,29 @@ public class Main {
                     System.out.print("Enter your task: ");
                     userTask = scan.nextLine();
 
-                    System.out.print("Set priority (Ex: Low, Medium, High): ");
+                    System.out.print("Enter your status (Not started, In progress, Done): ");
+                    status = scan.nextLine();
+
+                    if (!(status.equalsIgnoreCase("Not Started") || status.equalsIgnoreCase("In progress") || status.equalsIgnoreCase("Done"))) {
+                        System.out.println("Please choose among the choices!");
+                        break;
+                    } 
+
+                    System.out.print("Set priority (Low, Medium, High): ");
                     priority = scan.nextLine();
-                    
+
+                    if (!(priority.equalsIgnoreCase("Low") || priority.equalsIgnoreCase("Medium") || priority.equalsIgnoreCase("High"))) {
+                        System.out.println("Please choose among the choices!");
+                        break;
+                    }
+
                     System.out.println("Set subject: ");
                     subject = scan.nextLine();
-                    
+
                     System.out.print("Set date (dd-mm-yyyy): ");
                     date = scan.nextLine();
 
-                    Task schoolTask = new SchoolTask(userTask, "School", priority, date, subject);
+                    Task schoolTask = new SchoolTask(userTask, "School", status, priority, date, subject);
                     manager.add(schoolTask);
                     break;
 
@@ -215,10 +241,7 @@ public class Main {
 }
 
 
-package com.mycompany.main;
-
-
-public class Registration {
+class Registration {
 
     private String email, firstName, lastName, username, password;
     private TaskManager taskManager;
@@ -250,17 +273,14 @@ public class Registration {
 
 }
 
+class Task {
 
-package com.mycompany.main;
+    private String task, category, status, priority, date;
 
-
-public class Task {
-
-    private String task, category, priority, date;
-
-    public Task(String task, String category, String priority, String date) {
+    public Task(String task, String category, String status, String priority, String date) {
         this.task = task;
         this.category = category;
+        this.status = status;
         this.priority = priority;
         this.date = date;
     }
@@ -269,10 +289,11 @@ public class Task {
     
     public String getCategory() { return category; }
     
+    public String getStatus() { return status; }
     public String getPriority() { return priority; }
     
     public String getDate() { return date; }
-
+        
     public void setTask(String task) { this.task = task; }
 
     public void showDetails() {
@@ -283,16 +304,11 @@ public class Task {
     }
     @Override
     public String toString() {
-        return "Task: " + task + " | Category: " + category + " | Priority: " + priority + " | Date: " + date;
+        return "Task: " + task + " | Category: " + category + " | Status: " + status + " | Priority: " + priority + " | Date: " + date;
     }
 }
 
-
-package com.mycompany.main;
-
-import java.util.ArrayList;
-
-public class TaskManager {
+class TaskManager {
 
     private ArrayList<Task> list;
 
@@ -343,15 +359,12 @@ public class TaskManager {
       
 }
 
-
-package com.mycompany.main;
-
-public class PersonalTask extends Task{
+class PersonalTask extends Task{
     
     private String type;
     
-    public PersonalTask(String task, String category, String priority, String date, String type){
-        super(task, category, priority,date);
+    public PersonalTask(String task, String category, String status, String priority, String date, String type){
+        super(task, category, status, priority,date);
         this.type = type;
     }
     
@@ -367,13 +380,11 @@ public class PersonalTask extends Task{
     }
 }
 
-package com.mycompany.main;
-
-public class SchoolTask extends Task {
+class SchoolTask extends Task {
     private String subject;
 
-    public SchoolTask(String task, String category, String priority, String date, String subject) {
-        super(task, category, priority,date);
+    public SchoolTask(String task, String category, String status, String priority, String date, String subject) {
+        super(task, category, status, priority,date);
         this.subject = subject;
     }
 
